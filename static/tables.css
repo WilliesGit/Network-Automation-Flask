@@ -1,0 +1,122 @@
+/* ============================================= */
+/*  FINAL – EXACT MATCH TO YOUR SCREENSHOT       */
+/*  Keep your :root variables – they’re perfect  */
+/* ============================================= */
+
+:root {
+  --bg: #020617;
+  --content: #020617;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.1);
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border: #1f2937;
+  --header-bg: #0a0d21;
+  --row-bg: #020617;
+  --row-hover: rgba(31, 41, 55, 0.4);
+}
+
+
+.table-wrapper {
+  max-height: 500px;                  
+  border: 1.5px dashed #334155;
+  border-radius: 1rem;
+  margin-top: 1.1rem;
+  padding: 1.2rem 1.2rem 1rem;
+  background: var(--content);
+  overflow: hidden;
+}
+
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  padding: 0 0.2rem;
+}
+
+.table-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;  
+  overflow: hidden;               
+}
+
+
+.table thead th {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  background: var(--header-bg);
+}
+
+
+.table tbody tr {
+  background: var(--row-bg);
+  transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background: var(--row-hover);
+}
+
+/* Cells inside body */
+.table tbody td {
+  padding: 1rem 1.5rem;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+
+.table thead th:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+.table thead th:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+
+.table tbody tr td:first-child{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  transition: border-radius 0.18s ease;
+}
+
+.table tbody tr td:last-child{
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  transition: border-radius 0.18s ease;
+}
+
+.table tbody tr:hover td:first-child{
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.table tbody tr:hover td:last-child{
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+
