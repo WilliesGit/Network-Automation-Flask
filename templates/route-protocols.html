@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Device Automation</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  
+  <!-- Main site styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Table styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='table.css') }}">
+  <!-- Main Section styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='main_section.css') }}">
+  <!-- Form styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+</head>
+<body>
+
+
+  <aside class="sidebar">
+  <div class="logo">Device <span>Automation</span></div>
+
+  <div>
+    <div class="menu-label">Session</div>
+    <div class="menu">
+      <a href="/">
+        <div class="menu-item">
+        Connect via SSH
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <div class="menu-label">Tasks</div>
+    <div class="menu">
+
+      <a href="/hostname">
+        <div class="menu-item">
+          Hostname
+        </div>
+      </a>
+
+      <a href="/runningConfig">
+        <div class="menu-item">Save Run-Config</div>
+      </a>
+      
+      <a href="/startupConfig">
+        <div class="menu-item">Save Start-Config</div>
+      </a>
+      
+      <a href="/compareConfigs">
+        <div class="menu-item">Startup vs Run Config</div>
+      </a>
+      
+      <a href="/ciscoHardening">
+        <div class="menu-item">Cisco Harden vs Run-Config</div>
+      </a>
+
+      <a href="/loopback">
+        <div class="menu-item">Loopback</div>
+      </a>
+
+       <a href="/routeProtocols">
+        <div class="menu-item active">Routing Protocols</div>
+      </a>
+
+
+      <a href="/ACL">
+        <div class="menu-item">ACLs</div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    Session: <span>disconnected</span>
+  </div>
+</aside>
+
+<main class="content">
+  <div class="content-header">
+    <div>
+      <h2>Configure a Routing Protocol</h2>
+      <p>Provide device credentials, then select a task from the left to run against the active session.</p>
+    </div>
+  </div>
+
+   <form method="post" autocomplete="off">
+    <div class="devices-wrapper">
+      <!-- Device 1 (always visible) -->
+      <section class="device-card primary">
+        <div class="device-header">
+          <div class="device-title">Device 1</div>
+          <div class="device-tag">Required</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev1_ip">Host IP address</label>
+            <input id="dev1_ip" name="devices[0][ip]" type="text" placeholder="192.168.1.10">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev1_user">Username</label>
+            <input id="dev1_user" name="devices[0][username]" type="text" placeholder="admin">
+          </div>
+          <div class="field">
+            <label for="dev1_pass">Password</label>
+            <input id="dev1_pass" name="devices[0][password]" type="password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev1_secret">Enable secret </label>
+          <input id="dev1_secret" name="devices[0][secret]" type="password" placeholder="privilege exec password">
+        </div>
+      </section>
+
+     
+
+      <section class="device-card placeholder">
+        <div class="device-header">
+          <div class="device-title">Device 2</div>    
+        </div>
+
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev2_ip">Host IP address</label>
+            <input id="dev2_ip" name="devices[1][ip]" type="text" placeholder="192.168.1.11" >
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev2_user">Username</label>
+            <input id="dev2_user" name="devices[1][username]" type="text" placeholder="admin">
+          </div>
+          <div class="field">
+            <label for="dev2_pass">Password</label>
+            <input id="dev2_pass" name="devices[1][password]" type="password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev2_secret">Enable secret</label>
+          <input id="dev2_secret" name="devices[1][secret]" type="password" placeholder="privilege exec password">
+        </div>
+      </section>
+    </div>
+
+    <div class="buttons-row">
+      <button class="btn-add" type="button">
+        <span>+</span>Add another device
+      </button>
+
+      <button class="btn-primary" type="submit">Connect to devices</button>
+    
+    </div>
+
+   
+  </form>
+
+</main>
+
+  <!-- ===== JS Scripts ===== -->
+  <script src="{{ url_for('static', filename='ip_info.js') }}"></script>
+  <script src="{{ url_for('static', filename='export_CSV.js') }}"></script>
+  <script src="{{ url_for('static', filename='side_bar.js') }}"></script>
+  <script src="{{ url_for('static', filename='nav_bar.js') }}"></script>
+
+</body>
+</html>

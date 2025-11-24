@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Another Device</title>
+<style>
+  :root {
+    --bg: #020617;
+    --panel: #020617;
+    --card: #0b1120;
+    --accent: #22c55e;
+    --accent-soft: rgba(34, 197, 94, 0.12);
+    --border: #1f2937;
+    --text-main: #e5e7eb;
+    --text-muted: #9ca3af;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(15, 23, 42, 0.96);
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    padding: 1.5rem 1.7rem 1.8rem;
+    box-shadow: 0 22px 70px rgba(0,0,0,0.65);
+  }
+
+  h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .devices-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .device-card {
+    background: var(--card);
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    padding: 1rem 1.1rem;
+  }
+
+  .device-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+  }
+
+  .device-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .device-tag {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .device-card.primary {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent-soft);
+  }
+
+  .device-card.placeholder {
+    border-style: dashed;
+    border-color: #334155;
+    background: rgba(15,23,42,0.7);
+  }
+
+  .placeholder-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .field-row {
+    display: flex;
+    gap: 0.7rem;
+  }
+
+  .field {
+    flex: 1;
+    margin-bottom: 0.65rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 0.48rem 0.55rem;
+    border-radius: 0.55rem;
+    border: 1px solid #1f2937;
+    background: #020617;
+    color: var(--text-main);
+    font-size: 0.85rem;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+  }
+
+  .add-more-row {
+    margin-top: 0.7rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .add-more-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .btn-add {
+    padding: 0.42rem 0.9rem;
+    border-radius: 999px;
+    border: 1px dashed #4b5563;
+    background: transparent;
+    color: #e5e7eb;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .btn-add span {
+    color: var(--accent);
+    margin-right: 0.2rem;
+  }
+
+  .submit-row {
+    margin-top: 1.4rem;
+    text-align: right;
+  }
+
+  .btn-primary {
+    padding: 0.6rem 1.1rem;
+    border-radius: 0.8rem;
+    border: none;
+    background: linear-gradient(to right, #22c55e, #16a34a);
+    color: #022c22;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .field-row {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <h1>Configure multiple devices</h1>
+  <p class="subtitle">
+    Start with one device. If needed, click “Add another device” to enter details for a second or third device.
+  </p>
+
+  <form method="post" action="/connect-multiple">
+    <div class="devices-wrapper">
+      <!-- Device 1 (always visible) -->
+      <section class="device-card primary">
+        <div class="device-header">
+          <div class="device-title">Device 1</div>
+          <div class="device-tag">Required</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev1_ip">Host IP address</label>
+            <input id="dev1_ip" name="devices[0][ip]" type="text" placeholder="192.168.1.10">
+          </div>
+          <div class="field">
+            <label for="dev1_type">Connection type</label>
+            <select id="dev1_type" name="devices[0][type]">
+              <option value="ssh">SSH</option>
+              <option value="telnet">Telnet</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev1_user">Username</label>
+            <input id="dev1_user" name="devices[0][username]" type="text" placeholder="admin">
+          </div>
+          <div class="field">
+            <label for="dev1_pass">Password</label>
+            <input id="dev1_pass" name="devices[0][password]" type="password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev1_secret">Enable secret (optional)</label>
+          <input id="dev1_secret" name="devices[0][secret]" type="password" placeholder="Privilege exec password">
+        </div>
+      </section>
+
+      <!-- Device 2 placeholder (to be shown/cloned with JS later) -->
+      <section class="device-card placeholder">
+        <div class="device-header">
+          <div class="device-title">Device 2</div>
+          <div class="device-tag">Optional · appears after “Add another device”</div>
+        </div>
+
+        <p class="placeholder-text">
+          In the final version, this card (and a third one) will be created dynamically when the user clicks “Add another device”.
+          For now it shows how additional devices will look.
+        </p>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev2_ip">Host IP address</label>
+            <input id="dev2_ip" name="devices[1][ip]" type="text" placeholder="192.168.1.11">
+          </div>
+          <div class="field">
+            <label for="dev2_type">Connection type</label>
+            <select id="dev2_type" name="devices[1][type]">
+              <option value="ssh">SSH</option>
+              <option value="telnet">Telnet</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev2_user">Username</label>
+            <input id="dev2_user" name="devices[1][username]" type="text">
+          </div>
+          <div class="field">
+            <label for="dev2_pass">Password</label>
+            <input id="dev2_pass" name="devices[1][password]" type="password">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev2_secret">Enable secret</label>
+          <input id="dev2_secret" name="devices[1][secret]" type="password">
+        </div>
+      </section>
+    </div>
+
+    <div class="add-more-row">
+      <p class="add-more-hint">
+        Need to reach more devices? You can add up to 3 devices in a single run.
+      </p>
+      <button class="btn-add" type="button">
+        <span>+</span>Add another device
+      </button>
+    </div>
+
+    <div class="submit-row">
+      <button class="btn-primary" type="submit">Connect to devices</button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

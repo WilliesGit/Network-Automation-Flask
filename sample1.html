@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Network Task Wizard</title>
+<style>
+  :root {
+    --bg: #020617;
+    --card: #020617;
+    --accent: #a855f7;
+    --accent-soft: rgba(168, 85, 247, 0.16);
+    --border: #1f2937;
+    --text-main: #e5e7eb;
+    --text-muted: #9ca3af;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .shell {
+    max-width: 900px;
+    width: 100%;
+    background: rgba(15, 23, 42, 0.96);
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    padding: 1.6rem 1.8rem 1.8rem;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+  }
+  h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+  .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1.1rem;
+  }
+
+  .steps {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+  .step {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+  }
+  .step-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+  }
+  .step.active {
+    color: var(--accent);
+  }
+  .step.active .step-circle {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    padding: 1rem 1.1rem;
+  }
+
+  .card h2 {
+    font-size: 0.98rem;
+    margin-bottom: 0.5rem;
+  }
+  .card p {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+  }
+
+  .field {
+    margin-bottom: 0.7rem;
+  }
+  label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+  }
+  input, select {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.55rem;
+    border: 1px solid #1f2937;
+    background: #020617;
+    color: var(--text-main);
+    font-size: 0.86rem;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.4);
+  }
+  .btn {
+    width: 100%;
+    padding: 0.6rem 0.7rem;
+    margin-top: 0.3rem;
+    border-radius: 0.75rem;
+    border: none;
+    background: linear-gradient(to right, #a855f7, #6366f1);
+    color: #020617;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .tasks-list {
+    list-style: none;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+  }
+  .tasks-list li {
+    margin-bottom: 0.4rem;
+    padding-left: 0.85rem;
+    position: relative;
+  }
+  .tasks-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .output {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    background: #020617;
+    border-radius: 0.6rem;
+    padding: 0.7rem;
+    max-height: 180px;
+    overflow: auto;
+  }
+
+  @media (max-width: 800px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <h1>Network Task Wizard</h1>
+  <p class="subtitle">Connect to a Cisco IOS device, choose an operation, then review the output or downloaded files.</p>
+
+  <div class="steps">
+    <div class="step active">
+      <div class="step-circle">1</div>
+      <span>Connect</span>
+    </div>
+    <div class="step">
+      <div class="step-circle">2</div>
+      <span>Select task</span>
+    </div>
+    <div class="step">
+      <div class="step-circle">3</div>
+      <span>Review output</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <section class="card">
+      <h2>Step 1 · Device connection</h2>
+      <p>Enter device details to establish an SSH session. Telnet can be used only when SSH is not available.</p>
+
+      <div class="field">
+        <label for="ip">Host IP address</label>
+        <input id="ip" type="text" placeholder="192.168.0.10">
+      </div>
+      <div class="field">
+        <label for="user">Username</label>
+        <input id="user" type="text" placeholder="cisco">
+      </div>
+      <div class="field">
+        <label for="pass">Password</label>
+        <input id="pass" type="password" placeholder="••••••••">
+      </div>
+      <div class="field">
+        <label for="secret">Enable secret (optional)</label>
+        <input id="secret" type="password" placeholder="Privilege exec password">
+      </div>
+      <div class="field">
+        <label for="method">Connection type</label>
+        <select id="method">
+          <option>SSH (recommended)</option>
+          <option>Telnet</option>
+        </select>
+      </div>
+
+      <button class="btn">Start session</button>
+    </section>
+
+    <section class="card">
+      <h2>Next · Choose a task</h2>
+      <p>Once connected, run one or more tasks against the active session.</p>
+
+      <ul class="tasks-list">
+        <li>Configure hostname.</li>
+        <li>Save running configuration to a file.</li>
+        <li>Save startup configuration to a file.</li>
+        <li>Compare running vs startup configuration (HTML diff).</li>
+        <li>Check running configuration against Cisco hardening advice.</li>
+      </ul>
+
+      <div class="output" style="margin-top:0.7rem;">
+        [waiting] No active session. Fill in the connection details and click “Start session” to continue…
+      </div>
+    </section>
+  </div>
+</div>
+
+</body>
+</html>

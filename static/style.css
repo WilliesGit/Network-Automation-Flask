@@ -1,0 +1,240 @@
+:root {
+    --bg: #020617;
+    --sidebar: #020617;
+    --content: #020617;
+    --card: #0b1120;
+    --accent: #38bdf8;
+    --accent-soft: rgba(56, 189, 248, 0.1);
+    --text-main: #e5e7eb;
+    --text-muted: #9ca3af;
+    --border: #1f2937;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #020617;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    padding-left: 6vw;   
+    padding-right: 6vw; 
+    padding-top: 2rem;
+    
+  }
+
+  .sidebar {
+    width: 260px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    padding: 1.4rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .logo {
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 1.4rem;
+  }
+  .logo span {
+    color: var(--accent);
+  }
+  .menu-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .menu a {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+  }
+  
+  .menu-item {
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .menu-item:hover {
+    background: var(--accent-soft);
+    color: var(--text-main);
+  }
+  .menu-item.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+   
+  }
+  
+  .sidebar-footer {
+    margin-top: auto;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .sidebar-footer span {
+    color: var(--accent);
+  }
+
+  .content {
+    margin-top: -0.4%;
+    flex: 1;
+    padding: 1.6rem 2rem;
+    background: var(--content);
+  }
+  .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2rem;
+  }
+  .content-header h2 {
+    font-size: 1.1rem;
+  }
+  .content-header p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  
+.devices-wrapper {
+    padding-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    
+  }
+
+  .device-card {
+    background: var(--card);
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    padding: 1rem 1.1rem;
+  }
+
+  .device-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+  }
+
+  .device-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .device-tag {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .device-card.primary {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent-soft);
+  }
+
+  .device-card.placeholder {
+    border-style: dashed;
+    border-color: #334155;
+    background: rgba(15,23,42,0.7);
+  }
+
+
+  .field-row {
+    display: flex;
+    gap: 0.7rem;
+  
+  }
+
+  .field {
+    flex: 1;
+    margin-bottom: 0.65rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 0.48rem 0.55rem;
+    border-radius: 0.55rem;
+    border: 1px solid #1f2937;
+    background: #020617;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .buttons-row {
+    margin-top: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+ 
+
+  .btn-add {
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    border: 1px dashed #4b5563;
+    background: transparent;
+    color: #e5e7eb;
+    font-weight: 600;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+   
+  }
+
+  .btn-add span {
+    color: var(--accent);
+    margin-right: 0.2rem;
+  }
+
+
+  .btn-primary {
+    padding: 0.6rem 1.1rem;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(to right, #22c55e, #16a34a);
+    color: #022c22;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+ 
