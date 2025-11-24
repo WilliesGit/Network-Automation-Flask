@@ -11,6 +11,7 @@
   <!-- Main site styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <!-- Table styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='tables.css') }}">
  
   
 </head>
@@ -82,7 +83,7 @@
   <div class="content-header">
     <div>
       <h2>Configure Hostname</h2>
-      <p>Provide device credentials, then select a task from the left to run against the active session.</p>
+      <p>Provide hostname you wish to configure on the devices</p>
     </div>
   </div>
 
@@ -95,27 +96,12 @@
           <div class="device-tag">Required</div>
         </div>
 
+    
         <div class="field-row">
           <div class="field">
-            <label for="dev1_ip">Host IP address</label>
-            <input id="dev1_ip" name="devices[0][ip]" type="text" placeholder="192.168.1.10">
-          </div>
+            <label for="dev1_user">Hostname</label>
+            <input id="dev1_user" name="devices[0][hostname]" type="text" placeholder="UD-RT1">
         </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="dev1_user">Username</label>
-            <input id="dev1_user" name="devices[0][username]" type="text" placeholder="admin">
-          </div>
-          <div class="field">
-            <label for="dev1_pass">Password</label>
-            <input id="dev1_pass" name="devices[0][password]" type="password" placeholder="••••••••">
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="dev1_secret">Enable secret </label>
-          <input id="dev1_secret" name="devices[0][secret]" type="password" placeholder="privilege exec password">
         </div>
       </section>
 
@@ -126,43 +112,54 @@
           <div class="device-title">Device 2</div>    
         </div>
 
-
         <div class="field-row">
           <div class="field">
-            <label for="dev2_ip">Host IP address</label>
-            <input id="dev2_ip" name="devices[1][ip]" type="text" placeholder="192.168.1.11" >
+            <label for="dev2_user">Hostname</label>
+            <input id="dev2_user" name="devices[1][hostname]" type="text" placeholder="UD-RT1">
           </div>
         </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="dev2_user">Username</label>
-            <input id="dev2_user" name="devices[1][username]" type="text" placeholder="admin">
-          </div>
-          <div class="field">
-            <label for="dev2_pass">Password</label>
-            <input id="dev2_pass" name="devices[1][password]" type="password" placeholder="••••••••">
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="dev2_secret">Enable secret</label>
-          <input id="dev2_secret" name="devices[1][secret]" type="password" placeholder="privilege exec password">
-        </div>
+  
       </section>
     </div>
 
     <div class="buttons-row">
       <button class="btn-add" type="button">
-        <span>+</span>Add another device
+        <span>+</span>Add another Hostname
       </button>
 
-      <button class="btn-primary" type="submit">Connect to devices</button>
+      <button class="btn-primary" type="submit">Configure Hostname</button>
     
     </div>
-
-   
   </form>
+
+  <section class="hostname-results">
+    <div class="table-wrapper">
+      <table class="table">
+         <div class="table-header">
+          <div class="table-title">Device 2</div>    
+        </div>
+          <thead>
+          <tr>
+              <th>Device</th>
+              <th>Host IP</th>
+              <th>Username</th>
+              <th>Configured Hostname</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td>1</td>
+              <td>192.168.1.3</td>
+              <td>cisco</td>
+              <td>HR-RT</td>
+          </tr>
+      
+          
+          <!-- Repeat rows for VLSM results -->
+          </tbody>
+      </table>
+      </div>
+  </section>
 
 </main>
 
