@@ -72,9 +72,6 @@
     </div>
   </div>
 
-  <div class="sidebar-footer">
-    Session: <span>disconnected</span>
-  </div>
 </aside>
 
 <main class="content">
@@ -85,79 +82,108 @@
     </div>
   </div>
 
-   <form method="post" autocomplete="off">
+   <form class="form-panel" autocomplete="off">
     <div class="devices-wrapper">
       <!-- Device 1 (always visible) -->
       <section class="device-card primary">
         <div class="device-header">
           <div class="device-title">Device 1</div>
-          <div class="device-tag">Required</div>
+          <div class="device-tag"></div>
         </div>
 
         <div class="field-row">
           <div class="field">
             <label for="dev1_ip">Host IP address</label>
-            <input id="dev1_ip" name="devices[0][ip]" type="text" placeholder="192.168.1.10">
+            <input id="dev1_ip" type="text" placeholder="192.168.1.10">
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
             <label for="dev1_user">Username</label>
-            <input id="dev1_user" name="devices[0][username]" type="text" placeholder="admin">
+            <input id="dev1_user" type="text" placeholder="admin">
           </div>
           <div class="field">
             <label for="dev1_pass">Password</label>
-            <input id="dev1_pass" name="devices[0][password]" type="password" placeholder="••••••••">
+            <input id="dev1_pass"  type="password" placeholder="••••••••">
           </div>
         </div>
 
         <div class="field">
           <label for="dev1_secret">Enable secret </label>
-          <input id="dev1_secret" name="devices[0][secret]" type="password" placeholder="privilege exec password">
+          <input id="dev1_secret"  type="password" placeholder="privilege exec password">
         </div>
       </section>
 
      
 
-      <section class="device-card placeholder">
+      <section class="device-card primary">
         <div class="device-header">
-          <div class="device-title">Device 2</div>    
+          <div class="device-title">Device 2</div>
+          <div class="device-tag"></div>    
         </div>
 
 
         <div class="field-row">
           <div class="field">
             <label for="dev2_ip">Host IP address</label>
-            <input id="dev2_ip" name="devices[1][ip]" type="text" placeholder="192.168.1.11" >
+            <input id="dev2_ip" type="text" placeholder="192.168.1.11" >
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
             <label for="dev2_user">Username</label>
-            <input id="dev2_user" name="devices[1][username]" type="text" placeholder="admin">
+            <input id="dev2_user"  type="text" placeholder="admin">
           </div>
           <div class="field">
             <label for="dev2_pass">Password</label>
-            <input id="dev2_pass" name="devices[1][password]" type="password" placeholder="••••••••">
+            <input id="dev2_pass"  type="password" placeholder="••••••••">
           </div>
         </div>
 
         <div class="field">
           <label for="dev2_secret">Enable secret</label>
-          <input id="dev2_secret" name="devices[1][secret]" type="password" placeholder="privilege exec password">
+          <input id="dev2_secret" type="password" placeholder="privilege exec password">
         </div>
       </section>
+
+
+       <section class="device-card primary">
+        <div class="device-header">
+          <div class="device-title">Device 3</div> 
+          <div class="device-tag"></div>   
+        </div>
+
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev3_ip">Host IP address</label>
+            <input id="dev3_ip" type="text" placeholder="192.168.1.11" >
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev3_user">Username</label>
+            <input id="dev3_user"  type="text" placeholder="admin">
+          </div>
+          <div class="field">
+            <label for="dev3_pass">Password</label>
+            <input id="dev3_pass"  type="password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev3_secret">Enable secret</label>
+          <input id="dev3_secret" type="password" placeholder="privilege exec password">
+        </div>
+      </section>
+
     </div>
 
     <div class="buttons-row">
-      <button class="btn-add" type="button">
-        <span>+</span>Add another device
-      </button>
-
-      <button class="btn-primary" type="submit">Save Devices Configs</button>
-    
+      <button class="btn-primary" id="device-btn" type="submit">Save Devices Configs</button>
     </div>
 
    
