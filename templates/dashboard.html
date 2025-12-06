@@ -10,12 +10,12 @@
   
   <!-- Main site styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
+  
 </head>
 
 <body>
 
-
+  <!-- Sidebar -->
   <aside class="sidebar">
   <div class="logo">Device <span>Automation</span></div>
 
@@ -60,6 +60,10 @@
         <div class="menu-item">Loopback</div>
       </a>
 
+      <a href="/interface">
+        <div class="menu-item">Interface Configuration</div>
+      </a>
+
        <a href="/routeProtocols">
         <div class="menu-item">Routing Protocols</div>
       </a>
@@ -74,6 +78,7 @@
 
 </aside>
 
+<!-- Main Content -->
 <main class="content">
   <div class="content-header">
     <div>
@@ -84,7 +89,7 @@
 
    <form class="form-panel" autocomplete="off">
     <div class="devices-wrapper">
-      <!-- Device 1 (always visible) -->
+    
       <section class="device-card primary">
         <div class="device-header">
           <div class="device-title">Device 1</div>
@@ -191,7 +196,7 @@
 
 </main>
 
-  <!-- ===== JS Scripts ===== -->
+  <!--JS Scripts-->
   <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
 
 </body>
