@@ -10,11 +10,14 @@
   
   <!-- Main site styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Table styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='tables.css') }}">
 
 </head>
+
 <body>
 
-
+  <!-- Sidebar -->
   <aside class="sidebar">
   <div class="logo">Device <span>Automation</span></div>
 
@@ -43,7 +46,7 @@
         <div class="menu-item">Save Run-Config</div>
       </a>
       
-      <a href="/startupConfig ">
+      <a href="/startupConfig">
         <div class="menu-item active">Save Start-Config</div>
       </a>
       
@@ -59,10 +62,13 @@
         <div class="menu-item">Loopback</div>
       </a>
 
+      <a href="/interface">
+        <div class="menu-item">Interface Configuration</div>
+      </a>
+
        <a href="/routeProtocols">
         <div class="menu-item">Routing Protocols</div>
       </a>
-
 
       <a href="/ACL">
         <div class="menu-item">ACLs</div>
@@ -71,102 +77,154 @@
     </div>
   </div>
 
-  <div class="sidebar-footer">
-    Session: <span>disconnected</span>
-  </div>
 </aside>
 
+<!-- Main Content -->
 <main class="content">
   <div class="content-header">
     <div>
-      <h2>Save Startup Configuration to a File</h2>
-      <p>Provide device credentials, then select a task from the left to run against the active session.</p>
+      <h2>Save Startup Configuration</h2>
+      <p>Use pre-filled device info to retrieve startup configuration</p>
     </div>
   </div>
 
-   <form method="post" autocomplete="off">
+   <form class="form-panel" autocomplete="off">
     <div class="devices-wrapper">
-      <!-- Device 1 (always visible) -->
+
       <section class="device-card primary">
         <div class="device-header">
           <div class="device-title">Device 1</div>
-          <div class="device-tag">Required</div>
+          <div class="device-tag"></div>
         </div>
 
         <div class="field-row">
           <div class="field">
             <label for="dev1_ip">Host IP address</label>
-            <input id="dev1_ip" name="devices[0][ip]" type="text" placeholder="192.168.1.10">
+            <input id="dev1_ip" type="text" placeholder="192.168.1.10">
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
             <label for="dev1_user">Username</label>
-            <input id="dev1_user" name="devices[0][username]" type="text" placeholder="admin">
+            <input id="dev1_user" type="text" placeholder="admin">
           </div>
           <div class="field">
             <label for="dev1_pass">Password</label>
-            <input id="dev1_pass" name="devices[0][password]" type="password" placeholder="••••••••">
+            <input id="dev1_pass"  type="password" placeholder="••••••••">
           </div>
         </div>
 
         <div class="field">
           <label for="dev1_secret">Enable secret </label>
-          <input id="dev1_secret" name="devices[0][secret]" type="password" placeholder="privilege exec password">
+          <input id="dev1_secret"  type="password" placeholder="privilege exec password">
         </div>
       </section>
 
      
 
-      <section class="device-card placeholder">
+      <section class="device-card primary">
         <div class="device-header">
-          <div class="device-title">Device 2</div>    
+          <div class="device-title">Device 2</div>
+          <div class="device-tag"></div>    
         </div>
 
 
         <div class="field-row">
           <div class="field">
             <label for="dev2_ip">Host IP address</label>
-            <input id="dev2_ip" name="devices[1][ip]" type="text" placeholder="192.168.1.11" >
+            <input id="dev2_ip" type="text" placeholder="192.168.1.11" >
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
             <label for="dev2_user">Username</label>
-            <input id="dev2_user" name="devices[1][username]" type="text" placeholder="admin">
+            <input id="dev2_user"  type="text" placeholder="admin">
           </div>
           <div class="field">
             <label for="dev2_pass">Password</label>
-            <input id="dev2_pass" name="devices[1][password]" type="password" placeholder="••••••••">
+            <input id="dev2_pass"  type="password" placeholder="••••••••">
           </div>
         </div>
 
         <div class="field">
           <label for="dev2_secret">Enable secret</label>
-          <input id="dev2_secret" name="devices[1][secret]" type="password" placeholder="privilege exec password">
+          <input id="dev2_secret" type="password" placeholder="privilege exec password">
         </div>
       </section>
+
+
+       <section class="device-card primary">
+        <div class="device-header">
+          <div class="device-title">Device 3</div> 
+          <div class="device-tag"></div>   
+        </div>
+
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev3_ip">Host IP address</label>
+            <input id="dev3_ip" type="text" placeholder="192.168.1.11" >
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev3_user">Username</label>
+            <input id="dev3_user"  type="text" placeholder="admin">
+          </div>
+          <div class="field">
+            <label for="dev3_pass">Password</label>
+            <input id="dev3_pass"  type="password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev3_secret">Enable secret</label>
+          <input id="dev3_secret" type="password" placeholder="privilege exec password">
+        </div>
+      </section>
+
     </div>
 
     <div class="buttons-row">
-      <button class="btn-add" type="button">
-        <span>+</span>Add another device
-      </button>
-
-      <button class="btn-primary" type="submit">Connect to devices</button>
-    
+      <button class="btn-primary" id="device-btn" type="submit">Save Startup Configs</button>
     </div>
 
-   
   </form>
+
+  <!-- Results Table -->
+  <section class="startup-config-results">
+    <div class="table-wrapper">
+      <table class="table">
+         <div class="table-header">
+          <div class="table-title">Startup Configuration</div>    
+        </div>
+          <thead>
+          <tr>
+              <th>No.</th>
+              <th>Device</th>
+              <th>Startup-Config Details</th>
+              
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              
+          </tr>
+          </tbody>
+      </table>
+      </div>
+  </section>
 
 </main>
 
-  <!-- ===== JS Scripts ===== -->
+  <!-- JS Scripts-->
   <script src="{{ url_for('static', filename='startup-config.js') }}"></script>
-
 
 </body>
 </html>
