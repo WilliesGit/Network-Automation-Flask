@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Device Automation</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  
+  <!-- Main site styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='tables.css') }}">
+
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+  <div class="logo">Device <span>Automation</span></div>
+
+  <div>
+    <div class="menu-label">Session</div>
+    <div class="menu">
+      <a href="/">
+        <div class="menu-item">
+        Connect via SSH
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div>
+    <div class="menu-label">Tasks</div>
+    <div class="menu">
+
+      <a href="/hostname">
+        <div class="menu-item">
+          Hostname
+        </div>
+      </a>
+
+      <a href="/runningConfig">
+        <div class="menu-item">Save Run-Config</div>
+      </a>
+      
+      <a href="/startupConfig">
+        <div class="menu-item">Save Start-Config</div>
+      </a>
+      
+      <a href="/compareConfigs">
+        <div class="menu-item">Startup vs Run Config</div>
+      </a>
+      
+      <a href="/ciscoHardening">
+        <div class="menu-item">Cisco Harden vs Run-Config</div>
+      </a>
+
+      <a href="/loopback">
+        <div class="menu-item">Loopback Configuration</div>
+      </a>
+
+      <a href="/interface">
+        <div class="menu-item active">Interface Configuration</div>
+      </a>
+
+
+       <a href="/routeProtocols">
+        <div class="menu-item">Routing Protocols</div>
+      </a>
+
+
+      <a href="/ACL">
+        <div class="menu-item">ACLs</div>
+      </a>
+
+    </div>
+  </div>
+
+</aside>
+
+<!-- Main Content -->
+<main class="content">
+  <div class="content-header">
+    <div>
+      <h2>Interface Configuration</h2>
+      <p>Confiure an interface with an IP address accross all devices</p>
+    </div>
+  </div>
+
+   <form class="form-panel" autocomplete="off">
+    <div class="devices-wrapper">
+   
+      <section class="device-card primary">
+        <div class="device-header">
+          <div class="device-title">Device 1</div>
+          <div class="device-tag"></div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev1_int_num">Interface</label>
+            <input id="dev1_int_num" type="text" placeholder="FastEthernet0/0">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev1_int_ip">IP Address</label>
+            <input id="dev1_int_ip" type="text" placeholder="192.168.2.4">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev1_int_mask">Subnet Mask </label>
+          <input id="dev1_int_mask"  type="text" placeholder="255.255.255.0">
+        </div>
+      </section>
+
+     
+
+      <section class="device-card primary">
+        <div class="device-header">
+          <div class="device-title">Device 2</div>
+          <div class="device-tag"></div>    
+        </div>
+
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev2_int_num">Interface</label>
+            <input id="dev2_int_num" type="text" placeholder="FastEthernet0/0">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev2_int_ip">IP Address</label>
+            <input id="dev2_int_ip" type="text" placeholder="192.168.2.4">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev2_int_mask">Subnet Mask </label>
+          <input id="dev2_int_mask"  type="text" placeholder="255.255.255.0">
+        </div>
+      </section>
+
+
+       <section class="device-card primary">
+        <div class="device-header">
+          <div class="device-title">Device 3</div> 
+          <div class="device-tag"></div>   
+        </div>
+<div class="field-row">
+          <div class="field">
+            <label for="dev3_int_num">Interface</label>
+            <input id="dev3_int_num" type="text" placeholder="FastEthernet0/0">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="dev3_int_ip">IP Address</label>
+            <input id="dev3_int_ip" type="text" placeholder="192.168.2.4">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dev3_int_mask">Subnet Mask </label>
+          <input id="dev3_int_mask"  type="text" placeholder="255.255.255.0">
+        </div>
+
+      </section>
+
+    </div>
+
+    <div class="buttons-row">
+      <button class="btn-primary" id="device-btn" type="submit">Configure Interface</button>
+    </div>
+   
+  </form>
+
+  <!-- Results Table -->
+  <section class="interface-results">
+    <div class="table-wrapper">
+      <table class="table">
+         <div class="table-header">
+          <div class="table-title">Interface Configuration</div>    
+        </div>
+          <thead>
+          <tr>
+              <th>No.</th>
+              <th>Device</th>
+              <th>Interface Brief</th>
+             
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+             
+          </tr>
+      
+          </tbody>
+      </table>
+      </div>
+  </section>
+
+</main>
+
+  <!--JS Scripts-->
+  <script src="{{ url_for('static', filename='interface.js') }}"></script>
+
+</body>
+</html>
