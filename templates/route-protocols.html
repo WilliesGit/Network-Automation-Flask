@@ -10,11 +10,13 @@
   
   <!-- Main site styles -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
- 
+  <link rel="stylesheet" href="{{ url_for('static', filename='tables.css') }}">
+  
 </head>
+
 <body>
 
-
+  <!-- Sidebar -->
   <aside class="sidebar">
   <div class="logo">Device <span>Automation</span></div>
 
@@ -59,6 +61,10 @@
         <div class="menu-item">Loopback</div>
       </a>
 
+      <a href="/interface">
+        <div class="menu-item">Interface Configuration</div>
+      </a>
+
        <a href="/routeProtocols">
         <div class="menu-item active">Routing Protocols</div>
       </a>
@@ -71,102 +77,151 @@
     </div>
   </div>
 
-  <div class="sidebar-footer">
-    Session: <span>disconnected</span>
-  </div>
 </aside>
 
+<!-- Main Content -->
 <main class="content">
   <div class="content-header">
     <div>
-      <h2>Configure a Routing Protocol</h2>
-      <p>Provide device credentials, then select a task from the left to run against the active session.</p>
+      <h2>Routing Protocols</h2>
+      <p>Configure Routing Protocols across all devices</p>
     </div>
   </div>
 
-   <form method="post" autocomplete="off">
+   <form class="form-panel" autocomplete="off">
     <div class="devices-wrapper">
-      <!-- Device 1 (always visible) -->
+    
       <section class="device-card primary">
         <div class="device-header">
-          <div class="device-title">Device 1</div>
-          <div class="device-tag">Required</div>
+          <div class="device-title">Protocols</div>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="dev1_ip">Host IP address</label>
-            <input id="dev1_ip" name="devices[0][ip]" type="text" placeholder="192.168.1.10">
+    
+            <select class="select" name="route_id" id="route_id">
+                <option value="">Select a Protocol</option>
+                <hr />
+                <option value="OSPF">OSPF</option>
+                <option value="EIGRP">EIGRP</option> 
+                <option value="RIP">RIP</option> 
+            </select>
           </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="dev1_user">Username</label>
-            <input id="dev1_user" name="devices[0][username]" type="text" placeholder="admin">
-          </div>
-          <div class="field">
-            <label for="dev1_pass">Password</label>
-            <input id="dev1_pass" name="devices[0][password]" type="password" placeholder="••••••••">
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="dev1_secret">Enable secret </label>
-          <input id="dev1_secret" name="devices[0][secret]" type="password" placeholder="privilege exec password">
         </div>
       </section>
-
-     
-
-      <section class="device-card placeholder">
+      
+      <section class="device-card primary" id="ospf-card" style="display: none;">
         <div class="device-header">
-          <div class="device-title">Device 2</div>    
-        </div>
-
-
-        <div class="field-row">
-          <div class="field">
-            <label for="dev2_ip">Host IP address</label>
-            <input id="dev2_ip" name="devices[1][ip]" type="text" placeholder="192.168.1.11" >
-          </div>
+          <div class="device-title">Configure OSPF</div>
+          <div class="device-tag"></div>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="dev2_user">Username</label>
-            <input id="dev2_user" name="devices[1][username]" type="text" placeholder="admin">
+             <label for="ospf_process">Process ID</label>
+             <input id="ospf_process" type="text" placeholder="1">
           </div>
-          <div class="field">
-            <label for="dev2_pass">Password</label>
-            <input id="dev2_pass" name="devices[1][password]" type="password" placeholder="••••••••">
+
+           <div class="field">
+             <label for="ospf_area">Area</label>
+             <input id="ospf_area" type="text" placeholder="0">
           </div>
         </div>
 
-        <div class="field">
-          <label for="dev2_secret">Enable secret</label>
-          <input id="dev2_secret" name="devices[1][secret]" type="password" placeholder="privilege exec password">
+        <div class="field-row">
+          <div class="field">
+             <label for="ospf_network_ip">Network IP Address</label>
+             <input id="ospf_network_ip" type="text" placeholder="192.168.1.0">
+          </div>
+
+          <div class="field">
+             <label for="ospf_network_mask">Wild Card Mask</label>
+             <input id="ospf_network_mask" type="text" placeholder="0.0.0.255">
+          </div>
         </div>
       </section>
+
+      <section class="device-card primary" id="eigrp-card" style="display: none;">
+        <div class="device-header">
+          <div class="device-title">Configure EIGRP</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+             <label for="eigrp_as">AS Number</label>
+             <input id="eigrp_as" type="text" placeholder="100">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+             <label for="eigrp_network_ip">Network IP Address</label>
+             <input id="eigrp_network_ip" type="text" placeholder="192.168.1.0">
+          </div>
+
+          <div class="field">
+             <label for="eigrp_network_mask">Wild Card Mask</label>
+             <input id="eigrp_network_mask" type="text" placeholder="0.0.0.255">
+          </div>
+        </div>
+      </section>
+
+
+      <section class="device-card primary" id="rip-card" style="display: none;">
+        <div class="device-header">
+          <div class="device-title">Configure RIP</div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+             <label for="rip_network_ip">Network IP Address</label>
+             <input id="rip_network_ip" type="text" placeholder="192.168.1.0">
+          </div>
+
+        </div>
+      </section>
+
+
     </div>
 
     <div class="buttons-row">
-      <button class="btn-add" type="button">
-        <span>+</span>Add another device
-      </button>
-
-      <button class="btn-primary" type="submit">Connect to devices</button>
-    
+      <button class="btn-primary" id="device-btn" type="submit">Configure Route Protocol</button>
     </div>
 
    
   </form>
 
+  <!-- Results Table -->
+  <section class="route-protocols-results">
+    <div class="table-wrapper">
+      <table class="table">
+         <div class="table-header">
+          <div class="table-title">Loopback Configuration</div>    
+        </div>
+          <thead>
+          <tr>
+              <th>No.</th>
+              <th>Device</th>
+              <th>Interface Brief</th>
+             
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+             
+          </tr>
+          </tbody>
+      </table>
+      </div>
+  </section>
+
 </main>
 
-  <!-- ===== JS Scripts ===== -->
+  <!--JS Scripts-->
   <script src="{{ url_for('static', filename='route-protocols.js') }}"></script>
- 
 
 </body>
 </html>
