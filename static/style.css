@@ -9,7 +9,12 @@
     --text-muted: #9ca3af;
     --border: #1f2937;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  * {
+     box-sizing: border-box; 
+     margin: 0;
+     padding: 0;
+  }
 
   body {
     background: #020617;
@@ -82,14 +87,6 @@
    
   }
   
-  .sidebar-footer {
-    margin-top: auto;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
-  .sidebar-footer span {
-    color: var(--accent);
-  }
 
   .content {
     margin-top: -0.4%;
@@ -141,7 +138,7 @@
 
   .device-tag {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: red;
   }
 
   .device-card.primary {
@@ -155,6 +152,11 @@
     background: rgba(15,23,42,0.7);
   }
 
+  .line{
+    width: 100%;
+    border: 1px solid #30333e;
+    margin-top: -0.1rem;
+  }
 
   .field-row {
     display: flex;
@@ -203,26 +205,6 @@
     justify-content: flex-end;
   }
 
- 
-
-  .btn-add {
-    padding: 0.6rem 1.1rem;
-    border-radius: 999px;
-    border: 1px dashed #4b5563;
-    background: transparent;
-    color: #e5e7eb;
-    font-weight: 600;
-    font-size: 0.9rem;
-    font-family: 'Montserrat', sans-serif;
-    cursor: pointer;
-   
-  }
-
-  .btn-add span {
-    color: var(--accent);
-    margin-right: 0.2rem;
-  }
-
 
   .btn-primary {
     padding: 0.6rem 1.1rem;
@@ -236,5 +218,83 @@
     cursor: pointer;
     display: inline-block;
   }
+
+
+.select{
+    appearance: none;
+    -webkit-apperance: none;
+    -moz-appearance: none;
+    border: none;
+    background-color: #020617;
+    font-family: 'Montserrat', sans-serif;
+    padding: 0.8rem, 3rem, 0.8rem, 1rem;
+    cursor: pointer;
+    border-radius: 1rem;   
+    padding-right: 2rem;
+    border-color: var(--accent);
+    line-height: 1.6;
+  
+
+}
+
+.select:focus{
+  outline: none !important; 
+  box-shadow: none !important;
+}
+
+
+.select:focus,
+.select:hover{
+  outline: none;
+  border: 1px solid #1f2937;
+}
+
+
+.select option{
+  background-color: #020617 !important;
+  color: var(--text-main) !important;
+  padding: 0.3rem 0.4rem;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.select option:checked{
+  background-color: #020617 !important;
+  color: var(--text-main) !important;
+}
+
+.list-wrapper{
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+
+}
+
+.list{
+  background: var(--card);
+  border-radius: 1rem;
+  border: 2px dashed #334155;
+  padding: 1rem 1.1rem;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+}
+
+.list-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+ .list p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 2rem;
+   
+  }
+
 
  
