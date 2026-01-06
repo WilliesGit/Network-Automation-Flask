@@ -10,6 +10,45 @@ import threading
 app = Flask(__name__)
 
 
+#File to store devices information in JSON format
+device_db_file = 'devices_db.json'
+
+
+#Function to write device info to file
+def writeToFile(devices_db):
+    try:
+        with open(device_db_file, 'w') as devFile:
+            #Using json.dump() method to write data to file
+            json.dump(dict(devices_db), devFile)  
+
+        print(f"Data written to {device_db_file}")
+
+    except (Exception, IOError) as e:
+        print(f"Write error: {e}")
+
+
+#Function to load device info from file
+def loadFromFile():
+    try:
+        if os.path.exists(device_db_file):
+          with open(device_db_file, 'r') as devFile:
+              #Using json.load() method to read data from file
+              return json.load(devFile)
+
+        else:
+          print(f"{device_db_file} not found")
+          return defaultdict(dict)
+
+
+    except FileNotFoundError:
+        return defaultdict(dict)
+
+
+
+devices_db = loadFromFile()
+if not devices_db:
+    #Returns an empty dictionary if file not found or empty
+    devices_db = defaultdict(dict)
 
 
 
