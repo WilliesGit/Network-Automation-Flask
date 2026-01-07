@@ -52,6 +52,72 @@ if not devices_db:
 
 
 
+#Function to configure hostname on a device
+def configureHostname(device_key, device_info, devices_db):
+  try:
+  
+      device_data = devices_db.get(device_key)
+
+      if not device_data:
+        return {
+           'status': 'error',
+           'error': f'Device {device_key} not found in the database'
+        }
+
+      device_config = {
+        'device_type': 'cisco_ios',
+        'host': device_data['ip'],
+        'username': device_data['username'],
+        'password': device_data['password'],
+        'secret': device_data['secret']
+      }
+
+      session = ConnectHandler(**device_config)
+
+      if device_data.get('secret'):
+        session.enable()
+
+      #Configuring hostname
+      hostname_command = f"hostname {device_info['hostname']}"
+      session.send_config_set(hostname_command)
+
+      output = session.send_command('show running-config | include hostname')
+      print(output)
+
+      session.disconnect()
+
+      return {
+      'device': device_key,
+      'ip': device_data['ip'],
+      'username': device_data['username'],
+      'hostname': device_info['hostname'],
+      'status': 'success'
+      }
+
+  
+  except netmiko.NetMikoTimeoutException as e: 
+     return {
+        'status': 'error',
+        'error': f'Connection timeout: {str(e)}'}
+  
+  except netmiko.NetMikoAuthenticationException as e: 
+     return {
+        'status': 'error',
+        'error': f'Authentication failed: {str(e)}'}
+  
+  except (ValueError, KeyError, OSError) as e:
+    return {
+       'status': 'error',
+       'error': str(e)}
+  
+  except Exception as e:
+    return {
+       'status': 'error',
+       'error': str(e)}
+  
+
+
+
 #Defining route to render html pages
 @app.route("/", methods=["GET", "POST"])
 def home():
