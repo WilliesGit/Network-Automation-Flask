@@ -190,6 +190,82 @@ def runCon(device_key, device_info):
         'status': 'error',
         'error': str(e)}
 
+
+
+#Function to get startup configuration from a device
+def startCon(device_key, device_info):
+    try:
+      device_data = device_info
+      
+      if not device_data:
+         return {
+           'status': 'error',
+           'error': f'Device {device_key} not found in the database'
+        }
+
+      device_config = {
+        'device_type': 'cisco_ios',
+        'host': device_data['ip'],
+        'username': device_data['username'],
+        'password': device_data['password'],
+        'secret': device_data['secret']
+      }
+
+      session = ConnectHandler(**device_config)
+
+      if device_data.get('secret'):
+          session.enable()
+
+      output = session.send_command('show startup-config')
+
+      #Creating a file path to store devices startup configuration
+      filename = f'StartCon/{device_key}_startup.txt'
+      os.makedirs('StartCon', exist_ok=True)
+
+      #Writing to file
+      try:
+        with open(filename, 'w') as start_file:
+          start_file.write(output)
+
+      except IOError as e:
+        return {
+           'status': 'error',
+           'error': str(e)
+        }
+    
+      print(output)
+
+      session.disconnect()
+
+      
+      return {
+        'device' : device_key,
+        'message': f'Startup config saved to file {filename}',
+        'status': 'success'
+      }
+
+      
+    except netmiko.NetMikoTimeoutException as e: 
+      return {
+          'status': 'error',
+          'error': f'Connection timeout: {str(e)}'}
+    
+    except netmiko.NetMikoAuthenticationException as e: 
+      return {
+          'status': 'error',
+          'error': f'Authentication failed: {str(e)}'}
+    
+    except (ValueError, KeyError, OSError, IOError) as e:
+      return {
+        'status': 'error',
+        'error': str(e)}
+    
+    except Exception as e:
+      return {
+        'status': 'error',
+        'error': str(e)}
+    
+
 #Defining route to render html pages
 @app.route("/", methods=["GET", "POST"])
 def home():
