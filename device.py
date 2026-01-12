@@ -265,6 +265,86 @@ def startCon(device_key, device_info):
         'status': 'error',
         'error': str(e)}
     
+    
+
+#Function to configure an interface on a device
+def interfaceConfig(device_key, interface_configs, devices_db):
+   try:
+      device_data = devices_db.get(device_key)
+      if not device_data:
+          return {
+             'status': 'error',
+             'error': f'Device {device_key} not found in the database'
+          }
+      
+      int_config = ''
+      #Looping through the interface configurations for each device
+      for int_key, int_con in interface_configs.items():
+        if int_key == device_key:
+          int_config = int_con
+          break
+
+      interface = int_config['interface']
+      ip = int_config['ip']
+      mask = int_config['mask']
+
+      device_config = {
+        'device_type': 'cisco_ios',
+        'host': device_data['ip'],
+        'username': device_data['username'],
+        'password': device_data['password'],
+        'secret': device_data['secret']
+      }
+
+      session = ConnectHandler(**device_config)
+
+      if device_data.get('secret'):
+          session.enable()
+
+
+      #Interface Configuration Commands
+      interface_command = [
+              f"interface {interface}",
+              f"ip address {ip} {mask}",
+              "no shutdown"]
+                          
+       
+      session.send_config_set(interface_command)
+
+      output = session.send_command(f'show ip interface brief | include {interface}')
+      print(output)
+
+
+      session.disconnect()
+
+      return {
+        'device': device_key,
+        'message': 'Configuration Complete!',
+        'interface_info': output.strip(),
+        'status': 'success'
+      }
+      
+
+   except netmiko.NetMikoTimeoutException as e: 
+      return {
+          'status': 'error',
+          'error': f'Connection timeout: {str(e)}'}
+    
+   except netmiko.NetMikoAuthenticationException as e: 
+      return {
+          'status': 'error',
+          'error': f'Authentication failed: {str(e)}'}
+    
+   except (ValueError, KeyError, OSError, IOError) as e:
+      return {
+        'status': 'error',
+        'error': str(e)}
+    
+   except Exception as e:
+      return {
+        'status': 'error',
+        'error': str(e)}
+   
 
 #Defining route to render html pages
 @app.route("/", methods=["GET", "POST"])
