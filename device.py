@@ -422,7 +422,101 @@ def loopbackConfig(device_key, loopback_configs, devices_db):
         'status': 'error',
         'error': str(e)}
    
-   
+
+
+#Function to configure routing protocols on a device 
+def routeConfig(device_key, route_config, devices_db):
+   try:
+      device_data = devices_db.get(device_key)
+
+      if not device_data:
+          return {
+             'status': 'error',
+             'error': f'Device {device_key} not found in the database'
+          }
+      
+      #List to store routing commands
+      commands = []
+      protocol = ''
+
+
+      for index, config in route_config.items():
+          protocol = config['protocol']
+
+          if protocol == "OSPF":
+            print("Selected Protocol: ",protocol)
+            commands = [
+              f"router ospf {config['process_id']}",
+              f"network {config['ip']} {config['mask']} area {config['area']}"
+            ]
+
+
+          elif protocol == "EIGRP":
+            print("Selected Protocol: ",protocol)
+            commands = [
+              f"router eigrp {config['as_num']}",
+              f"network {config['ip']} {config['mask']}"
+            ]
+
+        
+          elif protocol == "RIP":
+            print("Selected Protocol: ",protocol)
+            commands = [
+              f"router rip",
+              f"version 2",
+              f"network {config['ip']}"
+            ]
+
+      device_config = {
+        'device_type': 'cisco_ios',
+        'host': device_data['ip'],
+        'username': device_data['username'],
+        'password': device_data['password'],
+        'secret': device_data['secret']
+      }
+      
+      session = ConnectHandler(**device_config)
+
+      if device_data.get('secret'):
+        session.enable()
+
+      session.send_config_set(commands)
+
+      output = session.send_command(f'show running-config | section router')
+      print(output)
+
+      session.disconnect()
+
+      return{
+        'device': device_key,
+        'route_info': output.strip(),
+        'message': f"{protocol} Configured Successfully",
+        'status': 'success'
+      }
+
+
+   except netmiko.NetMikoTimeoutException as e: 
+      return {
+          'status': 'error',
+          'error': f'Connection timeout: {str(e)}'}
+    
+   except netmiko.NetMikoAuthenticationException as e: 
+      return {
+          'status': 'error',
+          'error': f'Authentication failed: {str(e)}'}
+    
+   except (ValueError, KeyError, OSError, IOError) as e:
+      return {
+        'status': 'error',
+        'error': str(e)}
+    
+   except Exception as e:
+      return {
+        'status': 'error',
+        'error': str(e)}
+
+
+
 #Defining route to render html pages
 @app.route("/", methods=["GET", "POST"])
 def home():
