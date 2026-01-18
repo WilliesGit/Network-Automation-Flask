@@ -517,6 +517,116 @@ def routeConfig(device_key, route_config, devices_db):
 
 
 
+#Function to configure ACL on a device
+def aclConfig(device_key, acl_config, dir_config, devices_db):
+   try:
+      device_data = devices_db.get(device_key)
+
+      if not device_data:
+          return {
+             'status': 'error',
+             'error': f'Device {device_key} not found in the database'
+          }
+
+      #List to store all commands
+      commands = []
+      acl_commands = []
+      dir_commands = []
+      acl_type = ''
+      acl_dir = ''
+
+      #Looping through the ACL configurations for each device
+      for index, acl in acl_config.items():
+          acl_type = acl['type']
+
+          if acl_type == "Standard":
+            print("Selected Type: ",acl_type)
+            acl_commands = [
+              f"access-list {acl['deny_no']} {acl['deny_action']} {acl['deny_source']}",
+              f"access-list {acl['permit_no']} {acl['permit_action']} {acl['permit_source']}"
+            ]
+
+          elif acl_type == "Extended":
+            print("Selected Type: ",acl_type)
+            acl_commands = [
+              f"access-list {acl['deny_no']} {acl['deny_action']} {acl['deny_protocol']} {acl['deny_source']} {acl['deny_dest']} eq {acl['deny_port']}",
+              f"access-list {acl['permit_no']} {acl['permit_action']} {acl['permit_protocol']} {acl['permit_source']} {acl['permit_dest']} eq {acl['permit_port']}",
+              f"access-list {acl['permit_no']} permit {acl['permit_protocol']} any any"
+            ]
+
+      #Looping through the ACL direction configurations for each device
+      for index, direction in dir_config.items():
+           acl_dir = direction['direction']  
+
+           if acl_dir == "in":
+              print("Selected Direction: ",acl_dir)
+              dir_commands = [
+                f"interface {direction['interface']}",
+                f"ip access-group {direction['group_no']} in"
+            ] 
+
+           elif acl_dir == "out":
+              print("Selected Direction: ",acl_dir)
+              dir_commands = [
+                f"interface {direction['interface']}",
+                f"ip access-group {direction['group_no']} out"
+            ]
+              
+      
+      device_config = {
+          'device_type': 'cisco_ios',
+          'host': device_data['ip'],
+          'username': device_data['username'],
+          'password': device_data['password'],
+          'secret': device_data['secret']
+       }
+      
+
+      session = ConnectHandler(**device_config)
+
+      if device_data.get('secret'):
+          session.enable()
+
+      #Combining ACL and direction commands
+      commands.extend(acl_commands)
+      commands.extend(dir_commands)
+
+      session.send_config_set(commands, cmd_verify=False)
+
+      output = session.send_command('show access-lists')
+
+      session.disconnect()
+
+      return {
+        'device': device_key,
+        'route_info': output.strip(),
+        'message': f"{acl_type} Configured Successfully",
+        'status': 'success'
+      }
+
+      
+   except netmiko.NetMikoTimeoutException as e: 
+      return {
+          'status': 'error',
+          'error': f'Connection timeout: {str(e)}'}
+    
+   except netmiko.NetMikoAuthenticationException as e: 
+      return {
+          'status': 'error',
+          'error': f'Authentication failed: {str(e)}'}
+    
+   except (ValueError, KeyError, OSError, IOError) as e:
+      return {
+        'status': 'error',
+        'error': str(e)}
+    
+   except Exception as e:
+      return {
+        'status': 'error',
+        'error': str(e)}
+
+
+        
 #Defining route to render html pages
 @app.route("/", methods=["GET", "POST"])
 def home():
