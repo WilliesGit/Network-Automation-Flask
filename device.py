@@ -626,7 +626,8 @@ def aclConfig(device_key, acl_config, dir_config, devices_db):
         'error': str(e)}
 
 
-        
+
+
 #Defining route to render html pages
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -667,6 +668,33 @@ def routeProtocols():
 @app.route("/ACL", methods=["GET", "POST"])
 def ACL():
   return render_template("acl.html")
+
+
+
+#API endpoint to receive device information and store it
+@app.route("/api/device_info", methods=['POST'])
+def device_info():
+
+  #Retrieve user input as JSON data from the request
+  data = request.json
+
+  try:
+    devices = data['devices']
+
+    #Loops through devices and stores each device info in the devices_db
+    for device_key, device_info in devices.items(): 
+      devices_db[device_key] = device_info
+
+    #Saving the devices confiiguration to file
+    writeToFile(devices_db)
+    return jsonify({'status':'success', 'results': 'Devices information stored'}), 200
+
+  except (ValueError, KeyError, IOError) as e:
+    return jsonify({'error': str(e)}), 400
+
+  except Exception as e:
+    return jsonify({'error': str(e)}), 400
+
 
 
 
