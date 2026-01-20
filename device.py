@@ -697,6 +697,52 @@ def device_info():
 
 
 
+#API endpoint to configure hostname on devices
+@app.route("/api/hostname_config", methods=['POST'])
+def hostname_config():
+
+  #Retrieve user input as JSON data from the request
+  data = request.json
+
+  #List to store result to be sent back for processing
+  results = []
+  threads = []
+  lock = threading.Lock()   
+
+  
+  hostnames = data['devices']
+  
+  def worker(device_key, device_info):
+      result = configureHostname(device_key, device_info, devices_db)
+      with lock:
+          results.append(result)
+
+  #Create a thread per device
+  for device_key, device_info in hostnames.items():
+      print('Device keys: ',device_key)
+      
+      t = threading.Thread(target=worker, args=(device_key, device_info))
+      threads.append(t)
+      t.start() 
+
+  #Wait for all threads to complete
+  for t in threads:
+      t.join()
+
+  any_success = False
+
+  for r in results:
+      if r.get('status') == 'success':
+          any_success = True
+          break
+      
+  if any_success:
+      status_code = 200 
+  else:
+      status_code = 400
+
+  return jsonify({'devices': results}), status_code
+
 
 
 
