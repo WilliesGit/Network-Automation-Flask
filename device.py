@@ -792,6 +792,52 @@ def running_config():
     return jsonify({'results': results}), status_code    
   
 
+#API endpoint to get startup configuration from devices
+@app.route("/api/start_config", methods=['POST'])
+def start_config():
+    #Retrieve user input as JSON data from the request
+    data = request.json
+
+    #List to store result to be sent back for processing
+    results = []
+    threads = []
+    lock = threading.Lock()   
+    
+    
+    devices = data['devices']
+
+    def worker(device_key, device_info):
+        result = startCon(device_key, device_info)
+        with lock:
+            results.append(result)
+
+    #Create a thread per device
+    for device_key, device_info in devices.items(): 
+      print('Device keys: ',device_key)
+      
+      t = threading.Thread(target=worker, args=(device_key, device_info))
+      threads.append(t)
+      t.start() 
+
+    #Wait for all threads to complete
+    for t in threads:
+        t.join()
+
+    any_success = False
+
+    for r in results:
+        if r.get('status') == 'success':
+            any_success = True
+            break
+        
+    if any_success:
+        status_code = 200 
+    else:
+        status_code = 400
+
+    return jsonify({'results': results}), status_code  
+
+
 
 
 if __name__ == "__main__":
