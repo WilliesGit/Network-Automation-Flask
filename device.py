@@ -838,7 +838,84 @@ def start_config():
     return jsonify({'results': results}), status_code  
 
 
+#API endpoint to compare running and startup configurations
+@app.route("/api/compare_configs", methods=['POST'])
+def compare_configs():
+    
+    #Retrieve user input as JSON data from the request
+    data = request.json
+    #List to store result to be sent back for processing
+    results = []
 
+    try:
+      device_key = data.get('device_key')
+  
+      if not device_key:
+          results.append({'error': f'Device {device_key} is required'}), 400
+
+      #Checks if file with the device_key(dev1, dev2, dev3) exists
+      run_path = f"RunCon/{device_key}_running.txt"
+      start_path = f"StartCon/{device_key}_startup.txt"
+      diff_path = f"diff_{device_key}.html"
+     
+
+      #For running configuration
+      if not os.path.exists(run_path):
+        print(f"Missing: {run_path}")
+        return jsonify({'error': f"Missing running configuration {run_path}"}), 404
+
+      #For startup configuration
+      if not os.path.exists(start_path):
+        print(f"Missing: {start_path}")
+        return jsonify({'error': f"Missing startup configuration {start_path}"}), 404
+
+
+      #Reading running config from the file
+      try:
+        with open(run_path, 'r') as run_file:
+          run_lines = run_file.read().splitlines()
+      except IOError as e:
+        return jsonify({'error': str(e)}), 400
+
+
+      #Reading startup config from the file
+      try:
+        with open(start_path, 'r') as start_file:
+          start_lines = start_file.read().splitlines()
+      except IOError as e:
+        return jsonify({'error': str(e)}), 400
+
+
+      #Running comparison using difflib
+      diff = HtmlDiff()
+      comp_run_start = diff.make_file(run_lines, start_lines)
+
+      try:
+        with open(f"templates/{diff_path}", "w", encoding="utf-8") as diffFile:
+          diffFile.write(comp_run_start)
+      except IOError as e:
+        return jsonify({'error': str(e)}), 400
+
+      #Storing config difference in the templates folder 
+      diff_url = f"/templates/{diff_path}" 
+    
+
+      #Appends the result
+      results.append({
+        'device' : device_key,
+        'diff_url': diff_url,
+        'message': f'Comparison saved to {diff_url}'
+      })
+
+      return jsonify({'status':'success', 'results': results}), 200
+
+    
+    except (ValueError, KeyError, OSError, IOError) as e:
+      return jsonify({'error': str(e)}), 400
+    
+    except Exception as e:
+      return jsonify({'error': str(e)}), 400
+    
 
 if __name__ == "__main__":
   app.run(debug=True)
