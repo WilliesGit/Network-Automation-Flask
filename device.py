@@ -917,5 +917,116 @@ def compare_configs():
       return jsonify({'error': str(e)}), 400
     
 
+
+#API endpoint to check for Cisco device hardening advice
+@app.route("/api/cisco_hardening", methods=['POST'])
+def cisco_hardening():
+    
+    #Retrieve user input as JSON data from the request
+    data = request.json
+
+    #List to store result to be sent back for processing
+    results = []
+
+    try:
+      device_key = data.get('device_key')
+      device = data.get('selected_dev')
+  
+      if not device_key or not device:
+          results.append({'error': f'Device {device_key} and {device} is required'}), 400
+
+
+      #Checks if file with the device_key(dev1, dev2, dev3) exists
+      run_path = f"RunCon/{device_key}_running.txt"
+      
+     
+      #For running configuration
+      if not os.path.exists(run_path):
+        print(f"Missing: {run_path}")
+        return jsonify({'error': f"Missing running configuration {run_path}"}), 404
+
+  
+      #Reading running config from the file
+      try:
+        with open(run_path, 'r') as run_file:
+          run_lines = run_file.read().splitlines()
+      except IOError as e:
+        return jsonify({'error': str(e)}), 400
+
+
+      #Cisco Device Hardening Advice
+      hardening_advices = [
+        {
+          "id" : "no-pw-recovery",
+          "pattern": r"^no service password-recovery",
+          "commands": ["no service password-recovery"]
+        },
+
+        {
+          "id" : "tcp-keepalives",
+          "pattern": r"^service tcp-keepalives-(in|out)",
+          "commands": ["service tcp-keepalives-in", "service tcp-keepalives-out"]
+        },
+
+        {
+          "id" : "ip-options-drop",
+          "pattern": r"^ip options drop",
+          "commands": ["ip options drop"]
+        },
+
+        {
+          "id" : "no-ip-source-route",
+          "pattern": r"^no ip source-route",
+          "commands": ["no ip source-route"]
+        },
+
+        {
+          "id" : "memory-reserve",
+          "pattern": r"^memory reserve console",
+          "commands": ["memory reserve console"]
+        },
+        
+      ]
+
+      #List to store missing cisco hardening advice configuration
+      missing_advice = []
+
+      #Checking for missing hardening advice in the running configuration
+      for advice in hardening_advices:
+        found = False
+        for line in run_lines:
+              line = line.strip()
+              if re.search(advice['pattern'], line, re.IGNORECASE):
+                found = True
+                break
+
+        if not found:
+          missing_advice.append({
+              "id" : advice['id'],
+              "commands": advice['commands']
+          })
+      print(missing_advice)
+
+
+      #Appends the result
+      results.append({
+        'device' : device_key,
+        'ip' : device['ip'],
+        'missing_ad_count': len(missing_advice),
+        'missing_advice': missing_advice,
+        'message': 'Comparison Completed!'
+      })
+
+      return jsonify({'status':'success', 'results': results}), 200
+
+
+    except (ValueError, KeyError) as e:
+      return jsonify({'error': str(e)}), 400
+    
+    except Exception as e:
+      return jsonify({'error': str(e)}), 400
+
+      
+
 if __name__ == "__main__":
   app.run(debug=True)
