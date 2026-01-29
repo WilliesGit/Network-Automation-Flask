@@ -1028,5 +1028,96 @@ def cisco_hardening():
 
       
 
+#API endpoint to fix missing Cisco hardening advice 
+@app.route("/api/fix_hardening", methods=['POST'])
+def fix_hardening():
+    
+    #Retrieve user input as JSON data from the request
+    data = request.json
+    #List to store result to be sent back for processing
+    results = []
+    #List to store commands to be configured
+    commands = []
+    
+    try:
+      device_key = data.get('device_key')
+      device = data.get('selected_dev')
+      missing_advice = data.get('missing_advice')
+
+      if not device_key or not device:
+          results.append({'error': f'Device {device_key} and {device} is required'}), 400
+
+      device_data = devices_db.get(device_key)
+
+
+      device_config = {
+          'device_type': 'cisco_ios',
+          'host': device_data['ip'],
+          'username': device_data['username'],
+          'password': device_data['password'],
+          'secret': device_data['secret']
+      }
+
+      session = ConnectHandler(**device_config)
+
+      if device.get('secret'):
+          session.enable()
+
+      #Looping through the missing advice 
+      for advice in missing_advice:
+        advice_list = advice.get('commands')
+        #Extending the commands list with the missing advice
+        commands.extend((advice_list))
+         
+         
+      session.send_config_set(commands)
+
+      output = session.send_command('show running-config')
+      print(output)
+
+
+      #Saving updated running configuration to file
+      run_path = f"RunCon/{device_key}_running.txt"
+
+      #For running configuration
+      if not os.path.exists(run_path):
+        print(f"Missing: {run_path}")
+        return jsonify({'error': f"Missing running configuration {run_path}"}), 404
+
+      #Writing updated Running Config to file
+      try:
+        with open(run_path, 'w') as run_file:
+          run_file.write(output)
+      except IOError as e:
+        return jsonify({'error': str(e)}), 400
+      
+
+      #Appends the result
+      results.append({
+        'device' : device_key,
+        'ip' : device['ip'],
+        'message': f'Configuration Fixed!. See {run_path}',
+        
+      })
+
+      return jsonify({'status':'success', 'results': results}), 200
+
+
+    
+    except netmiko.NetMikoTimeoutException as e: 
+     return jsonify({'error': str(e)}), 400
+  
+    except netmiko.NetMikoAuthenticationException as e: 
+      return jsonify({'error': str(e)}), 400
+    
+    except (ValueError, KeyError, OSError) as e:
+      return jsonify({'error': str(e)}), 400
+    
+    except Exception as e:
+      return jsonify({'error': str(e)}), 400
+
+
+
+
 if __name__ == "__main__":
   app.run(debug=True)
