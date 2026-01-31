@@ -1117,7 +1117,54 @@ def fix_hardening():
       return jsonify({'error': str(e)}), 400
 
 
+#API endpoint to configure an interface on devices
+@app.route("/api/interface_config", methods=['POST'])
+def interface_config():
 
+  #Retrieve user input as JSON data from the request
+  data = request.json
+
+  #List to store result to be sent back for processing
+  results = []
+  threads = []
+  lock = threading.Lock()   
+  
+  
+  devices = data['devices']
+  interface_configs = data['interface_configs']
+
+  def worker(device_key, device_info):
+      result = interfaceConfig(device_key, interface_configs, devices_db)
+      with lock:
+          results.append(result)
+
+
+  #Loops through devices 
+  for device_key, device_info in devices.items():
+      print('Device keys: ',device_key)
+
+      t = threading.Thread(target=worker, args=(device_key, device_info))
+      threads.append(t)
+      t.start()
+      
+  for t in threads:
+    t.join()
+
+  any_success = False
+
+  for r in results:
+      if r.get('status') == 'success':
+          any_success = True
+          break
+      
+  if any_success:
+      status_code = 200 
+  else:
+      status_code = 400
+
+  return jsonify({'results': results}), status_code
+
+ 
 
 if __name__ == "__main__":
   app.run(debug=True)
