@@ -9,7 +9,7 @@ import threading
 
 app = Flask(__name__)
 
-
+#New
 #File to store devices information in JSON format
 device_db_file = 'devices_db.json'
 
@@ -49,7 +49,6 @@ devices_db = loadFromFile()
 if not devices_db:
     #Returns an empty dictionary if file not found or empty
     devices_db = defaultdict(dict)
-
 
 
 #Function to configure hostname on a device
@@ -115,7 +114,6 @@ def configureHostname(device_key, device_info, devices_db):
        'status': 'error',
        'error': str(e)}
   
-
 
 #Funtion to get running configuration from a device
 def runCon(device_key, device_info):
@@ -189,8 +187,7 @@ def runCon(device_key, device_info):
       return {
         'status': 'error',
         'error': str(e)}
-
-
+    
 
 #Function to get startup configuration from a device
 def startCon(device_key, device_info):
@@ -264,7 +261,6 @@ def startCon(device_key, device_info):
       return {
         'status': 'error',
         'error': str(e)}
-    
     
 
 #Function to configure an interface on a device
@@ -344,7 +340,6 @@ def interfaceConfig(device_key, interface_configs, devices_db):
       return {
         'status': 'error',
         'error': str(e)}
-   
 
 #Function to configure a loopback interface on a device
 def loopbackConfig(device_key, loopback_configs, devices_db):
@@ -421,7 +416,6 @@ def loopbackConfig(device_key, loopback_configs, devices_db):
       return {
         'status': 'error',
         'error': str(e)}
-   
 
 
 #Function to configure routing protocols on a device 
@@ -514,8 +508,7 @@ def routeConfig(device_key, route_config, devices_db):
       return {
         'status': 'error',
         'error': str(e)}
-
-
+   
 
 #Function to configure ACL on a device
 def aclConfig(device_key, acl_config, dir_config, devices_db):
@@ -624,9 +617,8 @@ def aclConfig(device_key, acl_config, dir_config, devices_db):
       return {
         'status': 'error',
         'error': str(e)}
-
-
-
+   
+    
 
 #Defining route to render html pages
 @app.route("/", methods=["GET", "POST"])
@@ -671,6 +663,7 @@ def ACL():
 
 
 
+
 #API endpoint to receive device information and store it
 @app.route("/api/device_info", methods=['POST'])
 def device_info():
@@ -697,6 +690,7 @@ def device_info():
 
 
 
+  
 #API endpoint to configure hostname on devices
 @app.route("/api/hostname_config", methods=['POST'])
 def hostname_config():
@@ -742,6 +736,8 @@ def hostname_config():
       status_code = 400
 
   return jsonify({'devices': results}), status_code
+
+  
 
 
 
@@ -792,6 +788,8 @@ def running_config():
     return jsonify({'results': results}), status_code    
   
 
+
+
 #API endpoint to get startup configuration from devices
 @app.route("/api/start_config", methods=['POST'])
 def start_config():
@@ -836,6 +834,8 @@ def start_config():
         status_code = 400
 
     return jsonify({'results': results}), status_code  
+
+
 
 
 #API endpoint to compare running and startup configurations
@@ -916,8 +916,7 @@ def compare_configs():
     except Exception as e:
       return jsonify({'error': str(e)}), 400
     
-
-
+    
 #API endpoint to check for Cisco device hardening advice
 @app.route("/api/cisco_hardening", methods=['POST'])
 def cisco_hardening():
@@ -1026,7 +1025,7 @@ def cisco_hardening():
     except Exception as e:
       return jsonify({'error': str(e)}), 400
 
-      
+
 
 #API endpoint to fix missing Cisco hardening advice 
 @app.route("/api/fix_hardening", methods=['POST'])
@@ -1117,6 +1116,7 @@ def fix_hardening():
       return jsonify({'error': str(e)}), 400
 
 
+
 #API endpoint to configure an interface on devices
 @app.route("/api/interface_config", methods=['POST'])
 def interface_config():
@@ -1166,7 +1166,9 @@ def interface_config():
 
  
 
- #API endpoint to configure a loopback interface on devices
+
+
+#API endpoint to configure a loopback interface on devices
 @app.route("/api/loopback_config", methods=['POST'])
 def loopback_config():
 
@@ -1212,7 +1214,7 @@ def loopback_config():
 
   return jsonify({'results': results}), status_code
 
-
+  
 
 #API endpoint to configure routing protocols on devices
 @app.route("/api/route_protocol", methods=['POST'])
@@ -1263,6 +1265,9 @@ def route_protocol():
       status_code = 400
 
   return jsonify({'results': results}), status_code
+
+
+
 
 
 #API endpoint to configure ACLs on devices
@@ -1316,8 +1321,6 @@ def acl_config():
       status_code = 400
 
   return jsonify({'results': results}), status_code
-
-
 
 if __name__ == "__main__":
   app.run(debug=True)
